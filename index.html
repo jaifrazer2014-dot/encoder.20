@@ -12,6 +12,7 @@
       max-width: 750px;
       margin: 40px auto;
       padding: 20px;
+      transition: background 0.4s, color 0.4s;
     }
 
     h1 {
@@ -72,6 +73,12 @@
       font-size: 1.1rem;
       display: none;
     }
+
+    /* Stealth mode */
+    .stealth {
+      background: black !important;
+      color: black !important;
+    }
   </style>
 </head>
 
@@ -91,10 +98,12 @@
   <div id="app" style="display:none;">
     <h3>Input</h3>
     <textarea id="input"></textarea>
+    <p id="count" style="color:#00e0ff;">0 characters</p>
 
     <div style="margin-top:10px;">
       <button id="encodeBtn">Encode</button>
       <button id="decodeBtn">Decode</button>
+      <button id="copyBtn">Copy Output</button>
     </div>
 
     <h3 style="margin-top:20px;">Output</h3>
@@ -180,6 +189,34 @@
     document.getElementById("decodeBtn").onclick = () => {
       output.value = decode(input.value);
     };
+
+    // -------------------------------
+    // SURPRISE 1 — COPY BUTTON
+    // -------------------------------
+    document.getElementById("copyBtn").onclick = () => {
+      navigator.clipboard.writeText(output.value);
+      alert("Copied!");
+    };
+
+    // -------------------------------
+    // SURPRISE 2 — LIVE CHARACTER COUNTER
+    // -------------------------------
+    input.addEventListener("input", () => {
+      document.getElementById("count").textContent =
+        input.value.length + " characters";
+    });
+
+    // -------------------------------
+    // SURPRISE 3 — STEALTH MODE (press S)
+    // -------------------------------
+    let stealth = false;
+
+    document.addEventListener("keydown", (e) => {
+      if (e.key.toLowerCase() === "s") {
+        stealth = !stealth;
+        document.body.classList.toggle("stealth", stealth);
+      }
+    });
   </script>
 
 </body>
